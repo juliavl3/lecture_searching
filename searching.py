@@ -17,16 +17,36 @@ def read_data(file_name, field):
     with open(file_path, mode="r") as json_file:
         reader = json.load(json_file)
         for k,val in reader.items():
-            if k == field:
-                sequential_data = val
+            if k in {"unordered_numbers","ordered_numbers","dna_sequence"}:
+                if k == field:
+                    sequential_data = val
+                    return  sequential_data
+            else:
+                return None
 
-    return  sequential_data
+def linear_search(sequential_data, number):
+    """
 
-def linear_search():
-    pass
+    :param sequential_data:
+    :param number:
+    :return: dictionary with indices and occurrences of the number we are looking for
+    """
+    dict_data = {}
+    index = []
+    for i,val in enumerate(sequential_data):
+        if val == number:
+            index.append(i)
+            dict_data["positions"] = index
+        else:
+            continue
+
+        dict_data["count"] = len(index)
+
+    return dict_data
 
 def main():
-    print(read_data("sequential.json","unordered_numbers"))
+    seq_data = read_data("sequential.json","unordered_numbers")
+    print(linear_search(seq_data, 9))
 
 if __name__ == '__main__':
     main()
